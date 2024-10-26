@@ -1,0 +1,32 @@
+#include <unordered_map>
+using namespace std;
+
+class Solution{
+public:
+    int lenOfLongSubarr(int A[], int N, int K) {
+        unordered_map<int, int> sum_map;
+        int current_sum = 0;
+        int max_length = 0;
+
+        for (int i = 0; i < N; i++) {
+            current_sum += A[i];
+
+            // Check if the current_sum itself equals K
+            if (current_sum == K) {
+                max_length = i + 1;
+            }
+
+            // Check if (current_sum - K) exists in the map
+            if (sum_map.find(current_sum - K) != sum_map.end()) {
+                max_length = max(max_length, i - sum_map[current_sum - K]);
+            }
+
+            // Store current_sum in map if it's not already there
+            if (sum_map.find(current_sum) == sum_map.end()) {
+                sum_map[current_sum] = i;
+            }
+        }
+
+        return max_length;
+    }
+};
